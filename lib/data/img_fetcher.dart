@@ -32,7 +32,7 @@ String getSetID(){
   return "set_1";
 }
 
-getPhotoSet() {
+PhotoSet getPhotoSet() {
   String setID = getSetID();
   return PhotoSet(setID: setID, set: getPhotos(setID));
 }

@@ -2,6 +2,7 @@ import 'package:diffusion_gui/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 Future<void> main()  async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,79 +29,36 @@ class DiffusionApp extends StatelessWidget {
       home: const Home(),
       title: "Diffusion GUI",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        scaffoldBackgroundColor: Colors.orangeAccent,
+      theme: FlexThemeData.light(
+        scheme: FlexScheme.shark,
+        surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+        blendLevel: 20,
+        appBarOpacity: 0.95,
+        subThemesData: const FlexSubThemesData(
+          blendOnLevel: 20,
+          blendOnColors: false,
+        ),
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        useMaterial3: true,
+        // To use the playground font, add GoogleFonts package and uncomment
+        // fontFamily: GoogleFonts.notoSans().fontFamily,
       ),
-    );
-    // return MaterialApp(
-    //     title: "Language Diffusion Research",
-    //     home: Scaffold(
-    //       appBar: AppBar(
-    //         title: const Text("Diffusion Research"),
-    //         centerTitle: true,
-    //         backgroundColor: Colors.blueGrey,
-    //       ),
-    //       body: Row(
-    //         children: <Widget>[
-    //           Text("HELLO"),
-    //           TextButton(
-    //               onPressed: () {},
-    //               child: const Text("Start"),
-    //               // backgroundColor: Colors.lightGreen[200]
-    //           ),
-    //           TextButton(
-    //               onPressed: () {},
-    //               child: const Text("Instructions")
-    //           )
-    //         ],
-    //       ),
-    //         // Image.asset('assets/set_1/aeroplane.jpg')
-    //         // Text(
-    //         //     "Button",
-    //         //   style: TextStyle(
-    //         //     fontSize: 20,
-    //         //     fontWeight: FontWeight.normal,
-    //         //     color: Colors.black
-    //         //   ),
-    //         // ),
-    //       // ),
-    //       floatingActionButton: FloatingActionButton(
-    //         child: const Text("Start"),
-    //         backgroundColor: Colors.tealAccent,
-    //         onPressed: startAction,
-    //       ),
-    //     )
-    // );
-  }
-
-  void startAction() {}
-}
-
-class InstructionScreen extends StatelessWidget {
-  const InstructionScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-          appBar: AppBar(
-            title: const Text("Diffusion Research"),
-            centerTitle: true,
-            backgroundColor: Colors.blueGrey,
-          ),
-          body: Container(
-            color: Colors.lightGreen,
-            padding: const EdgeInsets.all(20.0),
-            child: const Text("HELLO")
-          ),
-          floatingActionButton: FloatingActionButton(
-            child: const Text("Start"),
-            backgroundColor: Colors.tealAccent,
-            onPressed: startAction,
-          ),
+      darkTheme: FlexThemeData.dark(
+        scheme: FlexScheme.shark,
+        surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+        blendLevel: 15,
+        appBarStyle: FlexAppBarStyle.background,
+        appBarOpacity: 0.90,
+        subThemesData: const FlexSubThemesData(
+          blendOnLevel: 30,
+        ),
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        useMaterial3: true,
+        // To use the playground font, add GoogleFonts package and uncomment
+        // fontFamily: GoogleFonts.notoSans().fontFamily,
+      ),
+      themeMode: ThemeMode.system,
     );
   }
-  void startAction() {}
 }
 

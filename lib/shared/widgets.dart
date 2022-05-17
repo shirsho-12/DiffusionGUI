@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// import 'package:image:image.dart';
 
 class PhotoBox extends StatelessWidget {
   final String imagePath;
@@ -8,19 +9,20 @@ class PhotoBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /// TODO: Change AssetImage to a loader from cloud Storage
-    var v = MediaQuery.of(context).size.height  * 3 / 4;
-    if (v > 768) {
-      v = 768.0;
-    } else if (v < 600) {
-      v = 600.0;
+    /// Image.network()
+    var v = MediaQuery.of(context).size.height  * 4 / 5;
+    if (v > 724) {
+      v = 724.0;
+    } else if (v < 360) {
+      v = 360.0;
     }
     final imageHeight = v;
 
-    v = MediaQuery.of(context).size.width  * 3 / 4;
-    if (v > 1366) {
-      v = 1366.0;
-    } else if (v < 800) {
-      v = 800.0;
+    v = MediaQuery.of(context).size.width  * 3 / 5;
+    if (v > 1024) {
+      v = 1024.0;
+    } else if (v < 480) {
+      v = 480.0;
     }
     final imageWidth = v;
     return Container(
@@ -32,37 +34,6 @@ class PhotoBox extends StatelessWidget {
           fit: BoxFit.fill,
         ),
         shape: BoxShape.rectangle,
-      ),
-    );
-  }
-}
-
-
-class RoutingButton extends StatelessWidget {
-  final String buttonText;
-  final Widget path;
-
-  const RoutingButton({required this.buttonText, required this.path, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var v = MediaQuery.of(context).size.width / 20;
-    if (v > 40) {
-      v = 40;
-    } else if (v < 15) {
-      v = 15;
-    }
-    final textSize = v;
-
-    return ElevatedButton(
-      onPressed: () => Get.to(() => path),
-      child: Text(
-        "Instructions",
-        style: TextStyle(color: Colors.black,
-            fontSize: textSize),
-      ),
-      style: ElevatedButton.styleFrom(
-        primary: Colors.lightBlueAccent[300],
       ),
     );
   }

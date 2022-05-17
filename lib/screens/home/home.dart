@@ -1,7 +1,6 @@
 import 'package:diffusion_gui/screens/authenticate/admin.dart';
 import 'package:diffusion_gui/screens/instructions.dart';
-import 'package:diffusion_gui/screens/start/start.dart';
-import 'package:diffusion_gui/shared/widgets.dart';
+import 'package:diffusion_gui/screens/phase_1/start.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,8 +9,16 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var v = MediaQuery.of(context).size.width / 20;
+    if (v > 40) {
+      v = 40;
+    } else if (v < 15) {
+      v = 15;
+    }
+    final textSize = v;
+
     return Scaffold(
-      backgroundColor: Colors.orangeAccent,
+      // backgroundColor: Colors.orangeAccent,
       appBar: AppBar(
         title: const Text("Diffusion Research"),
         centerTitle: true,
@@ -22,8 +29,8 @@ class Home extends StatelessWidget {
               child: const Text(
                 "Auracher, László, & Goh",
                 style: TextStyle(
-                  color: Colors.black,
                   fontSize: 16.0,
+                  color: Colors.white,
                 ),
               )
           ),
@@ -36,27 +43,38 @@ class Home extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        color: Colors.lightBlueAccent[100],
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            SizedBox(height: 20.0,),
-            Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
-                child: RoutingButton(buttonText: "Start", path: Start())
-                ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          // const SizedBox(height: 20.0,),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+              child:  ElevatedButton(
+                onPressed: () => Get.to(() => const Start()),
+                child: Text("Start", style: TextStyle(fontSize: textSize),),
+                style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all(const Size(250, 50))),
               ),
-            SizedBox(height: 20.0,),
-            Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
-                child: RoutingButton(buttonText: "Instructions", path: Instructions()),
               ),
             ),
-          ],
-        ),
+          const SizedBox(height: 20.0,),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+              child: ElevatedButton(
+                onPressed: () => Get.to(() => const Instructions()),
+
+                child: Text(
+                  "Instructions",
+                  style: TextStyle(fontSize: textSize),
+                ),
+                style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all(const Size(250, 50))),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

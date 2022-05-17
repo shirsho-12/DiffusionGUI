@@ -7,4 +7,7 @@ class PhotoSet {
 
   PhotoSet({this.setID, this.set});
 
+  Future getPhoto(int idx) async{
+    return await set![idx];
+  }
 }
