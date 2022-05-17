@@ -42,6 +42,13 @@ class _StartState extends State<Start> {
     //   }));
     // }
     // _stateChange();
+    final textFuture = Future.delayed(Duration(seconds: constants.initView),
+            () => showText = true);
+    final audioFuture = Future.delayed(Duration(seconds: constants.wordView),
+            () => showText = true);
+
+    /// The widgets will be created with a FutureBuilder method, with the future
+    /// being the ones created above
     FlutterTts flutterTts = FlutterTts();
 
     Future _speak(String text) async{
