@@ -5,7 +5,7 @@ class FirstStageConstants {
   final int wordView = 4;
   final int audioView = 8;
 
-  final int totalTime = 15;
+  final int totalTime = 5;
   final int loadTime = 4;
 }
 

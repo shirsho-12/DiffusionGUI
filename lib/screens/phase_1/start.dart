@@ -1,4 +1,5 @@
 import 'package:diffusion_gui/data/img_fetcher.dart';
+import 'package:diffusion_gui/models/photo.dart';
 import 'package:diffusion_gui/models/photo_set.dart';
 import 'package:diffusion_gui/screens/phase_2/phase_two.dart';
 
@@ -52,19 +53,20 @@ class _StartState extends State<Start> {
     FlutterTts flutterTts = FlutterTts();
 
     Future _speak(String text) async{
-      var result = await flutterTts.speak(text);
-      // if (result == 1) setState(() => ttsState = TtsState.playing);
+      await flutterTts.speak(text);
     }
     Future _slowSpeak(String text) async{
       flutterTts.setSpeechRate(0.1);
-      var result = await flutterTts.speak(text);
+      await flutterTts.speak(text);
       flutterTts.setSpeechRate(0.5);
       // if (result == 1) setState(() => ttsState = TtsState.playing);
     }
 
-    Timer _timer = Timer(Duration(seconds: constants.initView ), () {
-      setState(() {showText = true; print("TEXT");});});
-    // _timer
+    Future<Widget> getTextBox(String text) async{
+      return Future.delayed(Duration(seconds: constants.initView),
+      () => Container());
+    }
+
 
     return Scaffold(
       appBar: AppBar(
@@ -85,9 +87,11 @@ class _StartState extends State<Start> {
           ]
       ),
       body: SingleChildScrollView(
-        child: StreamBuilder<Object>(
-          stream: null,
+        child: StreamBuilder<Photo>(
+          stream: imageData.stream,
           builder: (context, snapshot) {
+            if (snapshot.data == null) return Container();
+            String imageWord = snapshot.data!.nameList.last.toTitleCase();
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -95,22 +99,21 @@ class _StartState extends State<Start> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 20.0, ),
-
                     showText ? Text(
-                      imageData.set![idx].nameList.last.toTitleCase(),
+                      imageWord,
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 32.0, letterSpacing: -1.5),
                     ) : const SizedBox(height: 20.0,),
                     showText ? const SizedBox(width: 8.0,): Container(),
                     showAudio ? InkWell(
-                        onTap: () => _speak(imageData.set![idx].nameList.last.toTitleCase()),
-                        onDoubleTap: () => _slowSpeak(imageData.set![idx].nameList.last.toTitleCase()),
+                        onTap: () => _speak(imageWord),
+                        onDoubleTap: () => _slowSpeak(imageWord),
                         child: const Icon(Icons.volume_up),
                     ): const SizedBox(height: 0.0,),
                   ],
                 ),
                 const SizedBox(height: 20.0,),
-                PhotoBox(imagePath: (imageData.set![idx].imgName!)),
+                PhotoBox(imagePath: (snapshot.data!.imgName!)),
                 // StagedWidget()
                 Container(
                   alignment: Alignment.bottomRight,

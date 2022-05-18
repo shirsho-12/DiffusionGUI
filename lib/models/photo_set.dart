@@ -16,6 +16,7 @@ class PhotoSet {
     Timer.periodic(Duration(seconds: constants.totalTime), (timer) {
       _controller.sink.add(set![_index]);
       _index++;
+      if (_index == 12) _controller.close();
     });
   }
 
