@@ -2,6 +2,7 @@ import 'package:diffusion_gui/data/img_fetcher.dart';
 import 'package:diffusion_gui/models/photo.dart';
 import 'package:diffusion_gui/models/photo_set.dart';
 import 'package:diffusion_gui/screens/phase_2/phase_two.dart';
+import 'package:diffusion_gui/shared/loading.dart';
 
 import 'package:get/get.dart';
 
@@ -26,36 +27,15 @@ class _StartState extends State<Start> {
 
   @override
   Widget build(BuildContext context) {
-    bool showText = true;
-    bool showAudio = true;
-    int idx = 0;
-
-    // void _stateChange() {
-    //   Future.delayed(Duration(seconds: constants.initView))
-    //       .then((_) => setState(() {showText = true; print("TEXT");}));
-    //   Future.delayed(Duration(seconds: constants.initView + constants.wordView))
-    //       .then((_) => setState(() {showAudio = true; print("AUDIO");}));
-    //   Future.delayed(Duration(seconds: constants.initView + constants.wordView + constants.audioView))
-    //       .then((_) => setState(() {
-    //     showAudio = false;
-    //     showText = false;
-    //     print("DONE");
-    //   }));
-    // }
-    // _stateChange();
-    final textFuture = Future.delayed(Duration(seconds: constants.initView),
-            () => showText = true);
-    final audioFuture = Future.delayed(Duration(seconds: constants.wordView),
-            () => showText = true);
 
     /// The widgets will be created with a FutureBuilder method, with the future
     /// being the ones created above
     FlutterTts flutterTts = FlutterTts();
 
-    Future _speak(String text) async{
+    void _speak(String text) async{
       await flutterTts.speak(text);
     }
-    Future _slowSpeak(String text) async{
+    void _slowSpeak(String text) async{
       flutterTts.setSpeechRate(0.1);
       await flutterTts.speak(text);
       flutterTts.setSpeechRate(0.5);
@@ -63,10 +43,30 @@ class _StartState extends State<Start> {
     }
 
     Future<Widget> getTextBox(String text) async{
-      return Future.delayed(Duration(seconds: constants.initView),
-      () => Container());
+      await Future.delayed(Duration(seconds: constants.initView));
+      return ConstrainedBox(
+        constraints: const BoxConstraints(
+          // minWidth: 150.0,
+          minHeight: 40.0,
+          // maxWidth: 150.0,
+          maxHeight: 40.0,
+        ),
+        // padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+        child: Text( text, textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 30.0, letterSpacing: -1.5)),
+      );
     }
-
+    Future<Widget> getAudioCue(String text) async{
+      await Future.delayed(Duration(seconds: constants.wordView));
+      return Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: InkWell(
+            onTap: () => _speak(text),
+            onDoubleTap: () => _slowSpeak(text),
+            child: const Icon(Icons.volume_up, size: 40.0,),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -89,45 +89,54 @@ class _StartState extends State<Start> {
       body: SingleChildScrollView(
         child: StreamBuilder<Photo>(
           stream: imageData.stream,
-          builder: (context, snapshot) {
-            if (snapshot.data == null) return Container();
-            String imageWord = snapshot.data!.nameList.last.toTitleCase();
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 20.0, ),
-                    showText ? Text(
-                      imageWord,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 32.0, letterSpacing: -1.5),
-                    ) : const SizedBox(height: 20.0,),
-                    showText ? const SizedBox(width: 8.0,): Container(),
-                    showAudio ? InkWell(
-                        onTap: () => _speak(imageWord),
-                        onDoubleTap: () => _slowSpeak(imageWord),
-                        child: const Icon(Icons.volume_up),
-                    ): const SizedBox(height: 0.0,),
-                  ],
-                ),
-                const SizedBox(height: 20.0,),
-                PhotoBox(imagePath: (snapshot.data!.imgName!)),
-                // StagedWidget()
-                Container(
-                  alignment: Alignment.bottomRight,
-                  child: ElevatedButton(
-                    onPressed: () => Get.to(() => const PhaseTwo()),
-                    child: const Text("To Phase 2"),
+          builder: (context, snapshot) {if (snapshot.data == null) return Container();
+          String imageWord = snapshot.data!.nameList.last.toTitleCase();
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 5.0,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 15.0, width: 30.0),
+                  FutureBuilder(
+                      future: getTextBox(imageWord),
+                      builder: (context, AsyncSnapshot<Widget> snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting: return const SizedBox(height: 40.0,);
+                          default:
+                            return snapshot.data!;
+                        }
+                      }
                   ),
-                )
-              ],
-            );
+                  FutureBuilder(
+                      future: getAudioCue(imageWord),
+                      builder: (context, AsyncSnapshot<Widget> snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting: return const SizedBox(height: 40.0, width: 48.0);
+                          default:
+                            return snapshot.data!;
+                        }
+                      }
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20.0,),
+              PhotoBox(imagePath: (snapshot.data!.imgName!)),
+              // StagedWidget()
+              Container(
+                alignment: Alignment.bottomRight,
+                child: ElevatedButton(
+                  onPressed: () => Get.to(() => const PhaseTwo()),
+                  child: const Text("To Phase 2"),
+                ),
+              )
+            ],
+          );
+
           }
         ),
       ),
-
     );
   }
 }

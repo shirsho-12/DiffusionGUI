@@ -5,8 +5,12 @@ class FirstStageConstants {
   final int wordView = 4;
   final int audioView = 8;
 
-  final int totalTime = 5;
-  final int loadTime = 4;
+  final int loadTime = 1;
+  int totalTime = 5;
+
+  FirstStageConstants() {
+    totalTime = initView + wordView + audioView + loadTime;
+  }
 }
 
 extension StringCasingExtension on String {

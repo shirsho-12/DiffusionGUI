@@ -9,20 +9,18 @@ class PhotoSet {
   final List<Photo>? set;
 
   final _controller = StreamController<Photo>();
-  var _index = 0;
+  var _index = 1;
 
   PhotoSet({this.setID, this.set}) {
     final constants = FirstStageConstants();
+    _controller.sink.add(set![0]);
     Timer.periodic(Duration(seconds: constants.totalTime), (timer) {
       _controller.sink.add(set![_index]);
       _index++;
-      if (_index == 12) _controller.close();
+      if (_index == 12) timer.cancel();
     });
   }
 
   Stream<Photo> get stream => _controller.stream;
 
-  Future getPhoto(int idx) async{
-    return await set![idx];
-  }
 }
