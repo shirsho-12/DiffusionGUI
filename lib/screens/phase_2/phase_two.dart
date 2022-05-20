@@ -1,8 +1,13 @@
+
+import 'dart:async';
+
 import 'package:diffusion_gui/screens/home/home.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/img_fetcher.dart';
+import '../../models/photo.dart';
 import '../../models/photo_set.dart';
+import '../../shared/constants.dart';
 import '../../shared/widgets.dart';
 import 'package:get/get.dart';
 
@@ -16,12 +21,15 @@ class PhaseTwo extends StatefulWidget {
 class _PhaseTwoState extends State<PhaseTwo> {
 
   final _formKey = GlobalKey<FormState>();
-
+  final PhotoSet imageData = getPhotoSet();
+  SecondStageConstants constants = SecondStageConstants();
+  String _answer = "";
+  int index = 0;
+  
   @override
+
   Widget build(BuildContext context) {
-    final PhotoSet imageData = getPhotoSet();
-    int idx = 2;
-    String answer = "";
+    Photo photo = imageData.set![index];
     return Scaffold(
       appBar: AppBar(
         title: const Text("Diffusion Research"),
@@ -44,45 +52,67 @@ class _PhaseTwoState extends State<PhaseTwo> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(height: 20.0,),
             Form(
               key: _formKey,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width > 550 ? 450:
-                            200,
+                    width: MediaQuery.of(context).size.width > 550 ? 450 : 200,
                     child: TextFormField(
-                        decoration: const InputDecoration(
-                          fillColor:Colors.white,
-                          filled: true,
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white, width: 1)
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.pink, width: 1)
-                            ),
+                      decoration: const InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white, width: 1)
                         ),
-
-                        onChanged: (val) => setState(() => answer = val),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.pink, width: 1)
+                        ),
+                      ),
+                      onFieldSubmitted: (val) =>
+                          setState(() => {
+                            if (_answer != "") {
+                              photo.nameList.add(_answer),
+                              _formKey.currentState?.save(),
+                              print(photo.nameList),
+                              index++,
+                              if (index == constants.numPhotos)
+                                Get.to(() => const Home())
+                            }
+                          }),
+                      onChanged: (val) => setState(() => {
+                        _answer = val,
+                      }),
                     ),
                   ),
+                  IconButton(
+                      onPressed: () => {
+                        if (_answer != "") {
+                          photo.nameList.add(_answer),
+                          _formKey.currentState?.save(),
+                          print(photo.nameList),
+                          index++,
+                          if (index == constants.numPhotos)
+                            Get.to(() => const Home())
+                        }
+                      },
+                      icon: const Icon(Icons.send)),
                   const SizedBox(width: 16.0,),
-                  ElevatedButton(
-                    onPressed: () {
-                      print(answer);
-                      idx += 1;
-                      if (idx == 12) Get.to(() => const Home());},
-                    child: const Text("Next"),
-                  ),
                 ],
               ),
             ),
             const SizedBox(height: 20.0,),
-            PhotoBox(imagePath: (imageData.set![idx].imgName!)),
+            FutureBuilder(
+                initialData: null,
+                builder: (context, snapshot) {
+                  return PhotoBox(imagePath: (photo.imgName!));
+                }
+            ),
           ],
         ),
-      ),
+      )
     );
   }
 }

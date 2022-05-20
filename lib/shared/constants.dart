@@ -1,17 +1,24 @@
 
 class FirstStageConstants {
 
-  final int initView = 2;
-  final int wordView = 4;
-  final int audioView = 8;
+  final int initView = 1;
+  final int wordView = 1;
+  final int audioView = 1;
 
   final int loadTime = 1;
-  int totalTime = 5;
+  final int breakTime = 10;
+  int totalTime = 1;
 
   FirstStageConstants() {
     totalTime = initView + wordView + audioView + loadTime;
   }
 }
+
+class SecondStageConstants {
+  final int viewTime = 8;
+  final int numPhotos = 6;
+}
+
 
 extension StringCasingExtension on String {
   String toCapitalized() => length > 0 ?'${this[0].toUpperCase()}${substring(1).toLowerCase()}':'';

@@ -1,6 +1,7 @@
+
 import 'package:diffusion_gui/screens/authenticate/admin.dart';
 import 'package:diffusion_gui/screens/instructions.dart';
-import 'package:diffusion_gui/screens/phase_1/start.dart';
+import 'package:diffusion_gui/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +19,6 @@ class Home extends StatelessWidget {
     final textSize = v;
 
     return Scaffold(
-      // backgroundColor: Colors.orangeAccent,
       appBar: AppBar(
         title: const Text("Diffusion Research"),
         centerTitle: true,
@@ -51,7 +51,7 @@ class Home extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
               child:  ElevatedButton(
-                onPressed: () => Get.to(() => const Start()),
+                  onPressed: () => Get.to(() => const WrapperOne()),
                 child: Text("Start", style: TextStyle(fontSize: textSize),),
                 style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(const Size(250, 50))),
@@ -75,7 +75,7 @@ class Home extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      )
     );
   }
 }
