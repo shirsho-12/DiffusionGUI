@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:diffusion_gui/screens/home/home.dart';
+import 'package:diffusion_gui/screens/thank_you.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/img_fetcher.dart';
@@ -30,25 +31,7 @@ class _PhaseTwoState extends State<PhaseTwo> {
 
   Widget build(BuildContext context) {
     Photo photo = imageData.set![index];
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Diffusion Research"),
-        centerTitle: true,
-        elevation: 0.0,
-        actions: <Widget>[
-          TextButton(
-              onPressed: () {},
-              child: const Text(
-                "Auracher, László, & Goh",
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.white,
-                ),
-              )
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
+    return SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -79,7 +62,7 @@ class _PhaseTwoState extends State<PhaseTwo> {
                               print(photo.nameList),
                               index++,
                               if (index == constants.numPhotos)
-                                Get.to(() => const Home())
+                                Get.to(() => const ThankYou())
                             }
                           }),
                       onChanged: (val) => setState(() => {
@@ -112,7 +95,6 @@ class _PhaseTwoState extends State<PhaseTwo> {
             ),
           ],
         ),
-      )
     );
   }
 }

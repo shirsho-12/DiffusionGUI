@@ -6,6 +6,12 @@ class ThankYou extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      alignment: Alignment.center,
+      child: const Text(
+        "Thank you participating.",
+        style: TextStyle(fontSize: 120.0),
+      )
+    );
   }
 }

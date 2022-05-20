@@ -1,9 +1,9 @@
+import 'package:diffusion_gui/screens/break.dart';
+import 'package:diffusion_gui/screens/phase_1/builder_functions.dart';
 import 'package:diffusion_gui/screens/phase_1/phase_one.dart';
 import 'package:diffusion_gui/screens/phase_2/phase_two.dart';
 import 'package:diffusion_gui/screens/thank_you.dart';
 import 'package:flutter/material.dart';
-
-import '../shared/pause.dart';
 
 class Base extends StatefulWidget {
   const Base({Key? key}) : super(key: key);
@@ -13,8 +13,6 @@ class Base extends StatefulWidget {
 }
 
 class _BaseState extends State<Base> {
-
-  final routingArray = [PhaseOne, Pause, PhaseOne, Pause, PhaseTwo, ThankYou];
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +34,7 @@ class _BaseState extends State<Base> {
             ),
           ]
       ),
+      body: getPhaseOneStream(const BreakOne()),
     );
   }
 }

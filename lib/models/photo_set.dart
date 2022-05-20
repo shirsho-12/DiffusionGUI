@@ -7,11 +7,9 @@ import 'package:diffusion_gui/shared/constants.dart';
 class PhotoSet {
   final String? setID;
   final List<Photo>? set;
+  int _index = 1;
 
   StreamController<Photo?> _controller = StreamController<Photo?>();
-  var _index = 0;
-  var _repeat = 0;
-  var totalIndex = 0;
   final constants = FirstStageConstants();
 
   PhotoSet({this.setID, this.set}) {
@@ -20,27 +18,25 @@ class PhotoSet {
   }
 
   void stageOneController() {
-    Timer.periodic(Duration(seconds: constants.totalTime), (timer)
-    {
-      // _controller.sink.add(set![_index]);
-      addPhoto();
+    Timer.periodic(Duration(seconds: constants.totalTime), (timer) {
+      addPhoto(_index);
       _index++;
-      totalIndex++;
-      if (_index == 11) {
+      if (_index == 13) {
         timer.cancel();
       }
     }
     );
+    // addPhoto(12);
   }
 
   void resetController() {
     _controller = StreamController<Photo?>();
   }
 
-  void addPhoto() async {
+  void addPhoto(int _index) async {
     _controller.sink.add(null);
     await Future.delayed(Duration(seconds: constants.loadTime),
-            () => _controller.sink.add(set![_index]));
+            () => _controller.sink.add(_index > 11 ? null : set![_index]));
   }
 
   void breakTime() async {
@@ -52,7 +48,7 @@ class PhotoSet {
     SecondStageConstants stageTwoConstants = SecondStageConstants();
     Timer.periodic(Duration(seconds: stageTwoConstants.viewTime), (timer) {
       // _controller.sink.add(set![_index]);
-      addPhoto();
+      addPhoto(_index);
       _index++;
       if (_index == stageTwoConstants.numPhotos - 1) {
         _index = 0;
@@ -68,7 +64,6 @@ class PhotoSet {
   }
 
   Stream<Photo?> get stageTwoStream {
-    _index = 0;
     stageTwoController();
     return _controller.stream;
   }

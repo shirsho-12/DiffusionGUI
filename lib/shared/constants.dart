@@ -6,7 +6,7 @@ class FirstStageConstants {
   final int audioView = 1;
 
   final int loadTime = 1;
-  final int breakTime = 10;
+  final int breakTime = 3;
   int totalTime = 1;
 
   FirstStageConstants() {
