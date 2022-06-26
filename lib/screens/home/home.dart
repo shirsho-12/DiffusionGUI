@@ -2,6 +2,7 @@
 import 'package:diffusion_gui/screens/authenticate/admin.dart';
 import 'package:diffusion_gui/screens/base_screen.dart';
 import 'package:diffusion_gui/screens/instructions.dart';
+import 'package:diffusion_gui/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,7 +38,7 @@ class Home extends StatelessWidget {
           /// Settings button -> Routes to admin page
           ElevatedButton.icon(
             /// TODO: Send to login if not logged in, else set to Admin
-              onPressed: () => Get.to(() => const Login()),
+              onPressed: () => Get.to(() => const SettingsPage()),
               icon: const Icon(Icons.settings),
               label: const Text("Settings"),
           ),
