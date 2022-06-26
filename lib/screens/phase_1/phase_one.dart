@@ -1,15 +1,12 @@
 import 'package:diffusion_gui/data/img_fetcher.dart';
 import 'package:diffusion_gui/models/photo.dart';
-import 'package:diffusion_gui/models/photo_set.dart';
 import 'package:diffusion_gui/screens/break.dart';
 import 'package:provider/provider.dart';
 
 import 'package:diffusion_gui/shared/constants.dart';
 import 'package:diffusion_gui/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'builder_functions.dart';
-
 
 class PhaseOne extends StatefulWidget {
   final Break nextDestination;
@@ -21,7 +18,6 @@ class PhaseOne extends StatefulWidget {
 }
 
 class _PhaseOneState extends State<PhaseOne> {
-
   final PhotoSet imageData = getPhotoSet();
 
   // Timer
@@ -39,44 +35,53 @@ class _PhaseOneState extends State<PhaseOne> {
 
     String imageWord;
     final photo = Provider.of<Photo?>(context);
-    photo == null ? imageWord = "" :
-      imageWord = photo.nameList.last.toTitleCase();
+    photo == null
+        ? imageWord = ""
+        : imageWord = photo.nameList.last.toTitleCase();
     print(imageWord + " " + index.toString());
-    return photo == null ? emptyContainer() : SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 5.0,),
-            Row(
+    return photo == null
+        ? emptyContainer()
+        : SingleChildScrollView(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 15.0, width: 30.0),
-                FutureBuilder(
-                  future: getTextBox(imageWord),
-                  builder: (context, AsyncSnapshot<Widget> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting: return const SizedBox(height: 40.0,);
-                      default:
-                        return snapshot.data!;
-                    }
-                  }
+                const SizedBox(
+                  height: 5.0,
                 ),
-                FutureBuilder(
-                  future: getAudioCue(imageWord),
-                  builder: (context, AsyncSnapshot<Widget> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting: return const SizedBox(height: 40.0, width: 48.0);
-                      default:
-                        return snapshot.data!;
-                    }
-                  }
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 15.0, width: 30.0),
+                    FutureBuilder(
+                        future: getTextBox(imageWord),
+                        builder: (context, AsyncSnapshot<Widget> snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.waiting:
+                              return const SizedBox(
+                                height: 40.0,
+                              );
+                            default:
+                              return snapshot.data!;
+                          }
+                        }),
+                    FutureBuilder(
+                        future: getAudioCue(imageWord),
+                        builder: (context, AsyncSnapshot<Widget> snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.waiting:
+                              return const SizedBox(height: 40.0, width: 48.0);
+                            default:
+                              return snapshot.data!;
+                          }
+                        }),
+                  ],
                 ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                PhotoBox(imagePath: (photo.imgName!)),
               ],
             ),
-          const SizedBox(height: 20.0,),
-          PhotoBox(imagePath: (photo.imgName!)),
-          ],
-        ),
-      );
+          );
   }
 }

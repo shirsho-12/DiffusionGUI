@@ -2,8 +2,14 @@ import 'dart:math';
 
 import 'package:diffusion_gui/models/photo.dart';
 
-import '../models/photo_set.dart';
+// import '../models/photo_set.dart';
 import '../models/photo.dart';
+
+class PhotoSet {
+  final String setID;
+  final List<Photo> set;
+  PhotoSet({required this.setID, required this.set});
+}
 
 List<Photo> getPhotos(String setId) {
   /// TODO getPhotos should retrieve data from supplied setID(folder name)
@@ -24,7 +30,7 @@ List<Photo> getPhotos(String setId) {
   return photos;
 }
 
-String getSetID(){
+String getSetID() {
   /// Seed set to 1234 for test
   var rng = Random(1234);
   rng.nextInt(4);
