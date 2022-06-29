@@ -1,22 +1,10 @@
-import 'package:diffusion_gui/screens/home/home.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:get/get.dart';
+import 'package:diffusion_gui/screens/phase_screen.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:diffusion_gui/exports.dart';
 
-Future<void> main()  async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-        apiKey: "AIzaSyCzFIBXHlAtvgurbuGSP1wJcGdViyrmdHc",
-        authDomain: "diffusiongui.firebaseapp.com",
-        databaseURL: "https://diffusiongui-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "diffusiongui",
-        storageBucket: "diffusiongui.appspot.com",
-        messagingSenderId: "31724390776",
-        appId: "1:31724390776:web:e8bfcdf08fa13f938ee08d"
-    )
-  );
+
   runApp(const DiffusionApp());
 }
 
@@ -25,8 +13,17 @@ class DiffusionApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       home: const Home(),
+      routes: {
+        startRoute: (context) => BlocProvider<PhaseBloc>(
+              create: (context) => PhaseBloc(),
+              child: const PhasePage(),
+            ),
+        settingsRoute: (context) => const SettingsPage(),
+        instructionsRoute: (context) => const Instructions(),
+        homeRoute: (context) => const Home(),
+      },
       title: "Diffusion GUI",
       debugShowCheckedModeBanner: false,
       theme: FlexThemeData.light(
@@ -61,4 +58,3 @@ class DiffusionApp extends StatelessWidget {
     );
   }
 }
-

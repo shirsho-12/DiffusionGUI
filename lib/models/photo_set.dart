@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:diffusion_gui/models/photo.dart';
@@ -10,7 +9,7 @@ class PhotoSet {
   int _index = 1;
 
   StreamController<Photo?> _controller = StreamController<Photo?>();
-  final constants = FirstStageConstants();
+  final constants = PhaseConstants();
 
   PhotoSet({this.setID, this.set}) {
     set!.shuffle();
@@ -24,8 +23,7 @@ class PhotoSet {
       if (_index == 13) {
         timer.cancel();
       }
-    }
-    );
+    });
     // addPhoto(12);
   }
 
@@ -36,21 +34,20 @@ class PhotoSet {
   void addPhoto(int _index) async {
     _controller.sink.add(null);
     await Future.delayed(Duration(seconds: constants.loadTime),
-            () => _controller.sink.add(_index > 11 ? null : set![_index]));
+        () => _controller.sink.add(_index > 11 ? null : set![_index]));
   }
 
   void breakTime() async {
     Timer(Duration(seconds: constants.breakTime), () {});
-}
-
+  }
 
   void stageTwoController() {
-    SecondStageConstants stageTwoConstants = SecondStageConstants();
-    Timer.periodic(Duration(seconds: stageTwoConstants.viewTime), (timer) {
+    PhaseConstants stageTwoConstants = PhaseConstants();
+    Timer.periodic(Duration(seconds: stageTwoConstants.formViewTime), (timer) {
       // _controller.sink.add(set![_index]);
       addPhoto(_index);
       _index++;
-      if (_index == stageTwoConstants.numPhotos - 1) {
+      if (_index == stageTwoConstants.numFormPhotos - 1) {
         _index = 0;
         timer.cancel();
       }
@@ -67,5 +64,4 @@ class PhotoSet {
     stageTwoController();
     return _controller.stream;
   }
-
 }

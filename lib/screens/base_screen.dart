@@ -1,8 +1,4 @@
-import 'package:diffusion_gui/screens/break.dart';
-import 'package:diffusion_gui/screens/phase_1/builder_functions.dart';
-import 'package:diffusion_gui/screens/phase_1/phase_one.dart';
-import 'package:diffusion_gui/screens/phase_2/phase_two.dart';
-import 'package:diffusion_gui/screens/thank_you.dart';
+import 'package:diffusion_gui/screens/phase_screen.dart';
 import 'package:flutter/material.dart';
 
 class Base extends StatefulWidget {
@@ -13,7 +9,6 @@ class Base extends StatefulWidget {
 }
 
 class _BaseState extends State<Base> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,9 +27,8 @@ class _BaseState extends State<Base> {
                 ),
               ),
             ),
-          ]
-      ),
-      body: getPhaseOneStream(const BreakOne()),
+          ]),
+      body: const PhasePage(),
     );
   }
 }
