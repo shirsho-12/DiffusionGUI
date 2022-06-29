@@ -1,7 +1,52 @@
 import 'package:diffusion_gui/models/photo.dart';
+import 'package:diffusion_gui/shared/constants.dart';
 import 'package:diffusion_gui/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
+
+class PhaseOneBox extends StatelessWidget {
+  const PhaseOneBox({
+    Key? key,
+    required this.showImage,
+    required this.showWord,
+    required this.showAudio,
+    required this.photo,
+  }) : super(key: key);
+  final bool showImage;
+  final bool showWord;
+  final bool showAudio;
+  final Photo photo;
+
+  @override
+  Widget build(BuildContext context) {
+    final imageWord = photo.nameList.last.toTitleCase();
+    devtools.log(imageWord);
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(
+            height: 5.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 15.0, width: 30.0),
+              showWord ? getTextBox(imageWord) : const SizedBox(height: 40.0),
+              showAudio
+                  ? getAudioCue(imageWord)
+                  : const SizedBox(height: 40.0, width: 48.0),
+            ],
+          ),
+          const SizedBox(height: 20.0),
+          showImage
+              ? PhotoBox(imagePath: (photo.imgName!))
+              : const SizedBox(height: 200.0),
+        ],
+      ),
+    );
+  }
+}
 
 class PhaseBreakBox extends StatelessWidget {
   const PhaseBreakBox({Key? key}) : super(key: key);
@@ -123,6 +168,21 @@ class ThankYouBox extends StatelessWidget {
     return const Center(
       child: Text(
         "Thank you participating.",
+        style: TextStyle(fontSize: 120.0),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+}
+
+class BetweenPhaseBox extends StatelessWidget {
+  const BetweenPhaseBox({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        "Phase Two",
         style: TextStyle(fontSize: 120.0),
         textAlign: TextAlign.center,
       ),

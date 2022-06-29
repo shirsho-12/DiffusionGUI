@@ -16,24 +16,24 @@ class PhaseInitial extends PhaseState {
 // phase one
 class PhaseOne extends PhaseState {
   final bool showImage;
-  final bool showText;
+  final bool showWord;
   final bool showAudio;
   final Photo photo;
   final int time;
   const PhaseOne({
     required this.showImage,
-    required this.showText,
+    required this.showWord,
     required this.showAudio,
     required this.photo,
     required this.time,
   });
 
   @override
-  List<Object?> get props => [showImage, showText, showAudio, photo];
+  List<Object?> get props => [showImage, showWord, showAudio, photo];
 
   @override
   String toString() {
-    return 'PhaseOne{showImage: $showImage, showText: $showText, showAudio: $showAudio, time: $time}';
+    return 'PhaseOne{showImage: $showImage, showWord: $showWord, showAudio: $showAudio, time: $time}';
   }
 }
 
@@ -52,6 +52,10 @@ class PhaseTwo extends PhaseState {
 
 class PhaseBreak extends PhaseState {
   const PhaseBreak();
+}
+
+class BetweenPhase extends PhaseState {
+  const BetweenPhase();
 }
 
 class PhaseEnd extends PhaseState {
