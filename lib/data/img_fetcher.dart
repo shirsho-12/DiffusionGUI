@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:diffusion_gui/models/photo.dart';
 
-import '../models/photo_set.dart';
 import '../models/photo.dart';
 
 List<Photo> getPhotos(String setId) {
@@ -24,12 +21,19 @@ List<Photo> getPhotos(String setId) {
   return photos;
 }
 
-String getSetID(){
+String getSetID() {
   /// Seed set to 1234 for test
-  var rng = Random(1234);
-  rng.nextInt(4);
-  var setList = ["set_1", "set_2", "set_3", "set_4"];
+  // var rng = Random(1234);
+  // rng.nextInt(4);
+  // var setList = ["set_1", "set_2", "set_3", "set_4"];
   return "set_1";
+}
+
+class PhotoSet {
+  final String setID;
+  final List<Photo> set;
+
+  PhotoSet({required this.setID, required this.set});
 }
 
 PhotoSet getPhotoSet() {
