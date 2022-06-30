@@ -16,7 +16,13 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   // final _formKey = GlobalKey<FormState>();
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-  final constants = PhaseConstants();
+  late final PhaseConstants constants;
+
+  @override
+  void initState() {
+    constants = PhaseConstants();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +54,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 settingKey: SettingsKeys.keyDarkMode,
                 onChange: (val) {},
               ),
+              DropDownSettingsTile(
+                  title: "Select Image Set",
+                  settingKey: SettingsKeys.keyPhotoSetID,
+                  selected: constants.photoSetID,
+                  values: const {
+                    "set_1": "1",
+                    "set_2": "2",
+                    "set_3": "3",
+                    "set_4": "4"
+                  }),
               SettingsGroup(
                 title: "Phase One Times",
                 subtitle: "All time values are in seconds.",

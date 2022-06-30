@@ -1,9 +1,9 @@
 import 'package:diffusion_gui/models/photo.dart';
+import 'package:diffusion_gui/shared/constants.dart';
 
 import '../models/photo.dart';
 
 List<Photo> getPhotos(String setId) {
-  /// TODO getPhotos should retrieve data from supplied setID(folder name)
   List<Photo> photos = [
     Photo(imgName: "assets/set_1/aeroplane.jpg", nameList: ["aeroplane"]),
     Photo(imgName: "assets/set_1/car.jpg", nameList: ["car"]),
@@ -21,14 +21,6 @@ List<Photo> getPhotos(String setId) {
   return photos;
 }
 
-String getSetID() {
-  /// Seed set to 1234 for test
-  // var rng = Random(1234);
-  // rng.nextInt(4);
-  // var setList = ["set_1", "set_2", "set_3", "set_4"];
-  return "set_1";
-}
-
 class PhotoSet {
   final String setID;
   final List<Photo> set;
@@ -37,6 +29,6 @@ class PhotoSet {
 }
 
 PhotoSet getPhotoSet() {
-  String setID = getSetID();
+  String setID = PhaseConstants().photoSetID;
   return PhotoSet(setID: setID, set: getPhotos(setID));
 }

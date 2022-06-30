@@ -32,7 +32,6 @@ class Home extends StatelessWidget {
 
             /// Settings button -> Routes to admin page
             ElevatedButton.icon(
-              /// TODO: Send to login if not logged in, else set to Admin
               onPressed: () => Navigator.pushNamed(context, settingsRoute),
               icon: const Icon(Icons.settings),
               label: const Text("Settings"),

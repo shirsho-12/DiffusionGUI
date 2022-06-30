@@ -4,7 +4,6 @@
 /// - Configure audio settings
 /// - Set delay time
 /// Requires admin account set-up (via link) and log-in
-/// TODO at the end
 
 import "package:flutter/material.dart";
 

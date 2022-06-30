@@ -2,38 +2,46 @@ import 'package:diffusion_gui/shared/shared_pref_keys.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 class PhaseConstants {
-  final int initView =
-      Settings.getValue(SettingsKeys.keyPhotoTime, defaultValue: 5)!.toInt();
-  final int wordView =
-      Settings.getValue(SettingsKeys.keyWordTime, defaultValue: 4)!.toInt();
-  final int audioView =
-      Settings.getValue(SettingsKeys.keyAudioTime, defaultValue: 5)!.toInt();
-  final int phaseOneBreakTime = Settings.getValue<int>(
+  final int initView = int.parse((Settings.getValue<String>(
+      SettingsKeys.keyPhotoTime,
+      defaultValue: "5")!));
+  final int wordView = int.parse((Settings.getValue<String>(
+      SettingsKeys.keyWordTime,
+      defaultValue: "4")!));
+  final int audioView = int.parse((Settings.getValue<String>(
+      SettingsKeys.keyAudioTime,
+      defaultValue: "5")!));
+  final int phaseOneBreakTime = int.parse((Settings.getValue<String>(
       SettingsKeys.keyPhaseOneWaitTime,
-      defaultValue: 3)!;
-  final int numPhaseOnePhotos =
-      Settings.getValue(SettingsKeys.keyPhaseOnePhotos, defaultValue: 12)!
-          .toInt();
+      defaultValue: "5")!));
+  final int numPhaseOnePhotos = int.parse((Settings.getValue<String>(
+      SettingsKeys.keyPhaseOnePhotos,
+      defaultValue: "12")!));
 
-  final int phaseOneRepeatTime =
-      Settings.getValue(SettingsKeys.keyPhaseOneRepeatTime, defaultValue: 4)!
-          .toInt();
-  final int betweenPhaseBreakTime =
-      Settings.getValue(SettingsKeys.keyBetweenPhaseBreakTime, defaultValue: 5)!
-          .toInt();
+  final int phaseOneRepeatTime = int.parse((Settings.getValue<String>(
+      SettingsKeys.keyPhaseOneRepeatTime,
+      defaultValue: "4")!));
+  final int betweenPhaseBreakTime = int.parse((Settings.getValue<String>(
+      SettingsKeys.keyBetweenPhaseBreakTime,
+      defaultValue: "5")!));
 
-  final int formViewTime =
-      Settings.getValue(SettingsKeys.keyFormTime, defaultValue: 8)!.toInt();
-  final int numPhaseTwoPhotos =
-      Settings.getValue(SettingsKeys.keyPhaseTwoPhotos, defaultValue: 6)!
-          .toInt();
-  final int phaseTwoBreakTime =
-      Settings.getValue(SettingsKeys.keyPhaseTwoWaitTime, defaultValue: 3)!
-          .toInt();
+  final int formViewTime = int.parse((Settings.getValue<String>(
+      SettingsKeys.keyFormTime,
+      defaultValue: "10")!));
+  final int numPhaseTwoPhotos = int.parse((Settings.getValue<String>(
+      SettingsKeys.keyPhaseTwoPhotos,
+      defaultValue: "8")!));
+  final int phaseTwoBreakTime = int.parse((Settings.getValue<String>(
+      SettingsKeys.keyPhaseTwoWaitTime,
+      defaultValue: "5")!));
 
   final bool repeatPhaseOne = Settings.getValue<bool>(
       SettingsKeys.keyRepeatPhaseOne,
       defaultValue: true)!;
+
+  final String photoSetID = Settings.getValue<String>(
+      SettingsKeys.keyPhotoSetID,
+      defaultValue: "set_1")!;
 }
 
 extension StringCasingExtension on String {

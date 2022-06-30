@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import '../../shared/constants.dart';
 
 class PhotoBox extends StatelessWidget {
   final String imagePath;
@@ -8,7 +7,6 @@ class PhotoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// TODO: Change AssetImage to a loader from cloud Storage
     /// Image.network()
     var v = MediaQuery.of(context).size.height * 4 / 5;
     if (v > 724) {
@@ -39,61 +37,78 @@ class PhotoBox extends StatelessWidget {
   }
 }
 
-FlutterTts flutterTts = FlutterTts();
-final constants = PhaseConstants();
-
-void _speak(String text) async {
-  try {
-    await flutterTts.speak(text);
-  } catch (e) {
-    // print(e);
-  }
-}
-
-void _slowSpeak(String text) async {
-  flutterTts.setSpeechRate(0.1);
-  try {
-    await flutterTts.speak(text);
-  } catch (e) {
-    // print(e);
-  }
-  flutterTts.setSpeechRate(0.5);
-  // if (result == 1) setState(() => ttsState = TtsState.playing);
-}
-
-Widget getTextBox(String text) {
-  return ConstrainedBox(
-    constraints: const BoxConstraints(
-      // minWidth: 150.0,
-      minHeight: 40.0,
-      // maxWidth: 150.0,
-      maxHeight: 40.0,
-    ),
-    // padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
-    child: Text(text,
-        textAlign: TextAlign.center,
-        style: const TextStyle(fontSize: 30.0, letterSpacing: -1.5)),
-  );
-}
-
-Widget getAudioCue(String text) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 8.0),
-    child: InkWell(
-      onTap: () => _speak(text),
-      onDoubleTap: () => _slowSpeak(text),
-      child: const Icon(
-        Icons.volume_up,
-        size: 40.0,
+class TextBox extends StatelessWidget {
+  const TextBox({required this.text, Key? key}) : super(key: key);
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        // minWidth: 150.0,
+        minHeight: 40.0,
+        // maxWidth: 150.0,
+        maxHeight: 40.0,
       ),
-    ),
-  );
+      // padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+      child: Text(text,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 30.0, letterSpacing: -1.5)),
+    );
+  }
 }
 
-// StreamProvider<Photo?> getPhaseOneStream(Break breakPath) {
-//   final PhotoSet imageData = getPhotoSet();
-//   return StreamProvider<Photo?>.value(
-//       initialData: imageData.initValue(),
-//       value: imageData.stageOneStream,
-//       child: PhaseOnePage(nextDestination: breakPath));
-// }
+class AudioCue extends StatefulWidget {
+  const AudioCue({required this.text, Key? key}) : super(key: key);
+  final String text;
+
+  @override
+  State<AudioCue> createState() => _AudioCueState();
+}
+
+class _AudioCueState extends State<AudioCue> {
+  FlutterTts flutterTts = FlutterTts();
+
+  @override
+  void initState() {
+    super.initState();
+    _setAwaitOptions();
+  }
+
+  Future _setAwaitOptions() async {
+    await flutterTts.awaitSpeakCompletion(true);
+  }
+
+  void _speak(String text) async {
+    try {
+      await flutterTts.speak(text);
+    } catch (e) {
+      // print(e);
+    }
+  }
+
+  void _slowSpeak(String text) async {
+    flutterTts.setSpeechRate(0.1);
+    try {
+      await flutterTts.speak(text);
+    } catch (e) {
+      // print(e);
+    }
+    flutterTts.setSpeechRate(0.5);
+    // if (result == 1) setState(() => ttsState = TtsState.playing);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: InkWell(
+        onTap: () => _speak(widget.text),
+        onDoubleTap: () => _slowSpeak(widget.text),
+        child: const Icon(
+          Icons.volume_up,
+          size: 40.0,
+        ),
+      ),
+    );
+  }
+}

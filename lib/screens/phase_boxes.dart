@@ -32,9 +32,11 @@ class PhaseOneBox extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 15.0, width: 30.0),
-              showWord ? getTextBox(imageWord) : const SizedBox(height: 40.0),
+              showWord
+                  ? TextBox(text: imageWord)
+                  : const SizedBox(height: 40.0),
               showAudio
-                  ? getAudioCue(imageWord)
+                  ? AudioCue(text: imageWord)
                   : const SizedBox(height: 40.0, width: 48.0),
             ],
           ),
