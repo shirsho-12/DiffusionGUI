@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 // import 'package:flutter/material.dart';
 import 'package:validators/validators.dart';
-import 'dart:developer' as devtools show log;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -17,7 +16,13 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   // final _formKey = GlobalKey<FormState>();
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-  final constants = PhaseConstants();
+  late final PhaseConstants constants;
+
+  @override
+  void initState() {
+    constants = PhaseConstants();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +54,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 settingKey: SettingsKeys.keyDarkMode,
                 onChange: (val) {},
               ),
+              DropDownSettingsTile(
+                  title: "Select Image Set",
+                  settingKey: SettingsKeys.keyPhotoSetID,
+                  selected: constants.photoSetID,
+                  values: const {
+                    "set_1": "1",
+                    "set_2": "2",
+                    "set_3": "3",
+                    "set_4": "4"
+                  }),
               SettingsGroup(
                 title: "Phase One Times",
                 subtitle: "All time values are in seconds.",
@@ -76,21 +91,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   TextInputSettingsTile(
                     title: "Between Image Wait-Time",
-                    initialValue: "${constants.dummy}",
+                    initialValue: "${constants.phaseOneBreakTime}",
                     settingKey: SettingsKeys.keyPhaseOneWaitTime,
                     onChange: (val) {},
                     validator: _validate,
                   ),
                   TextInputSettingsTile(
                     title: "Number of Images",
-                    initialValue: "${constants.phaseOnePhotos}",
+                    initialValue: "${constants.numPhaseOnePhotos}",
                     settingKey: SettingsKeys.keyPhaseOnePhotos,
-                    onChange: (val) {
-                      devtools.log(Settings.getValue(
-                              SettingsKeys.keyPhaseOnePhotos,
-                              defaultValue: constants.phaseOnePhotos.toString())
-                          .toString());
-                    },
+                    onChange: (val) {},
                     validator: (val) => val == null ||
                             !isNumeric(val) ||
                             !isInt(val) ||
@@ -108,7 +118,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   TextInputSettingsTile(
                     title:
                         "Repeat Wait-Time (Amount of time before the phase repeats)",
-                    initialValue: "${constants.dummy}",
+                    initialValue: "${constants.phaseOneRepeatTime}",
                     settingKey: SettingsKeys.keyPhaseOneRepeatTime,
                     onChange: (val) {},
                     validator: _validate,
@@ -117,7 +127,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               TextInputSettingsTile(
                 title: "Between Phase Wait-Time",
-                initialValue: "${constants.dummy}",
+                initialValue: "${constants.betweenPhaseBreakTime}",
                 settingKey: SettingsKeys.keyBetweenPhaseBreakTime,
                 onChange: (val) {},
                 validator: _validate,
@@ -139,7 +149,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 TextInputSettingsTile(
                   title: "Number of Images",
-                  initialValue: "${constants.phaseTwoPhotos}",
+                  initialValue: "${constants.numPhaseTwoPhotos}",
                   settingKey: SettingsKeys.keyPhaseTwoPhotos,
                   onChange: (val) {},
                   validator: (val) => val == null ||

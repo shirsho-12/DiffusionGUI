@@ -3,18 +3,24 @@ import 'package:diffusion_gui/shared/shared_pref_keys.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:diffusion_gui/exports.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+// TODO: Set up databse for word inputs and images - CRUD
+// TODO: Fix user input for phase two
+// TODO: Implement settings cache save/load
+// TODO: Convert to standalone program
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Settings.init(cacheProvider: SharePreferenceCache());
+  await initSettings();
   runApp(const DiffusionApp());
 }
 
-// Future<void> initSettings() async {
-//   SharePreferenceCache spCache = SharePreferenceCache();
-//   await spCache.init();
-//   await Settings.init(cacheProvider: spCache);
-// }
+Future<void> initSettings() async {
+  SharePreferenceCache spCache = SharePreferenceCache();
+  await spCache.init();
+  await Settings.init(cacheProvider: spCache);
+}
 
 class DiffusionApp extends StatelessWidget {
   const DiffusionApp({Key? key}) : super(key: key);
@@ -64,7 +70,7 @@ class DiffusionApp extends StatelessWidget {
             visualDensity: FlexColorScheme.comfortablePlatformDensity,
             useMaterial3: true,
             // To use the playground font, add GoogleFonts package and uncomment
-            // fontFamily: GoogleFonts.notoSans().fontFamily,
+            fontFamily: GoogleFonts.notoSans().fontFamily,
           ),
           themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
         );

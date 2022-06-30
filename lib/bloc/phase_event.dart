@@ -32,8 +32,8 @@ class ShowPhotoEvent extends PhaseEvent {
   const ShowPhotoEvent({required int duration}) : super(duration: duration);
 }
 
-class ShowTextEvent extends PhaseEvent {
-  const ShowTextEvent({required int duration}) : super(duration: duration);
+class ShowWordEvent extends PhaseEvent {
+  const ShowWordEvent({required int duration}) : super(duration: duration);
 }
 
 class ShowAudioEvent extends PhaseEvent {
@@ -45,7 +45,7 @@ class PauseEvent extends PhaseEvent {
 }
 
 class PhaseChangeEvent extends PhaseEvent {
-  const PhaseChangeEvent() : super(duration: 0);
+  const PhaseChangeEvent({required int duration}) : super(duration: duration);
 }
 
 class SecondShowNothingEvent extends PhaseEvent {

@@ -15,10 +15,10 @@ part 'phase_state.dart';
 
 class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
   final photos = getPhotos("set_1");
-  final constants = PhaseConstants();
+  static final constants = PhaseConstants();
   int index = 0;
-  int numPhotos;
-  bool repeatPhaseOne = false;
+  int numPhotos = constants.numPhaseOnePhotos;
+  bool repeatPhaseOne = constants.repeatPhaseOne;
 
   final Ticker ticker = const Ticker();
   StreamSubscription<int>? _tickerSubscription;
@@ -29,12 +29,11 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
     return super.close();
   }
 
-  PhaseBloc({this.numPhotos = 1}) : super(const PhaseInitial()) {
-    numPhotos = constants.phaseOnePhotos;
+  PhaseBloc() : super(const PhaseInitial()) {
     on<StartEvent>(_onStart);
     on<ShowNothingEvent>(_onShowNothing);
     on<ShowPhotoEvent>(_onShowPhoto);
-    on<ShowTextEvent>(_onShowText);
+    on<ShowWordEvent>(_onShowWord);
     on<ShowAudioEvent>(_onShowAudio);
     on<WaitEvent>(_onWait);
     on<PhaseChangeEvent>(_onPhaseChange);
@@ -46,18 +45,18 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
     photos.shuffle();
     emit(PhaseOne(
         showImage: false,
-        showText: false,
+        showWord: false,
         showAudio: false,
         photo: photos[index],
-        time: constants.breakTime));
-    _tickerAction(
-        ShowPhotoEvent(duration: constants.initView), constants.breakTime);
+        time: constants.phaseOneBreakTime));
+    _tickerAction(ShowPhotoEvent(duration: constants.initView),
+        constants.phaseOneBreakTime);
   }
 
   void _onShowNothing(ShowNothingEvent event, Emitter<PhaseState> emit) {
     emit(PhaseOne(
         showImage: false,
-        showText: false,
+        showWord: false,
         showAudio: false,
         photo: photos[index],
         time: event.duration));
@@ -68,17 +67,17 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
   void _onShowPhoto(ShowPhotoEvent event, Emitter<PhaseState> emit) {
     emit(PhaseOne(
         showImage: true,
-        showText: false,
+        showWord: false,
         showAudio: false,
         photo: photos[index],
         time: event.duration));
-    _tickerAction(ShowTextEvent(duration: constants.wordView), event.duration);
+    _tickerAction(ShowWordEvent(duration: constants.wordView), event.duration);
   }
 
-  void _onShowText(ShowTextEvent event, Emitter<PhaseState> emit) {
+  void _onShowWord(ShowWordEvent event, Emitter<PhaseState> emit) {
     emit(PhaseOne(
         showImage: true,
-        showText: true,
+        showWord: true,
         showAudio: false,
         photo: photos[index],
         time: event.duration));
@@ -89,12 +88,12 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
   void _onShowAudio(ShowAudioEvent event, Emitter<PhaseState> emit) {
     emit(PhaseOne(
         showImage: true,
-        showText: true,
+        showWord: true,
         showAudio: true,
         photo: photos[index],
         time: event.duration));
-    _tickerAction(
-        ShowNothingEvent(duration: constants.breakTime), event.duration);
+    _tickerAction(ShowNothingEvent(duration: constants.phaseOneBreakTime),
+        event.duration);
   }
 
   void _onWait(WaitEvent event, Emitter<PhaseState> emit) {
@@ -111,18 +110,19 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
             repeatPhaseOne = false;
             photos.shuffle();
             _tickerAction(ShowPhotoEvent(duration: constants.initView),
-                constants.breakTime);
+                constants.phaseOneRepeatTime);
             return;
           }
-          if (numPhotos == constants.phaseTwoPhotos) {
+          if (numPhotos == constants.numPhaseTwoPhotos) {
             // we've already changed phases, so we're done
             emit(const PhaseEnd());
             return;
           }
           // going to the second phase
           index = 0;
-          numPhotos = constants.phaseTwoPhotos;
-          add(const PhaseChangeEvent());
+          numPhotos = constants.numPhaseTwoPhotos;
+          emit(const BetweenPhase());
+          add(PhaseChangeEvent(duration: constants.betweenPhaseBreakTime));
           return;
         }
       }
@@ -135,8 +135,8 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
   void _onPhaseChange(PhaseChangeEvent event, Emitter<PhaseState> emit) {
     photos.shuffle();
     emit(PhaseTwo(showScreen: true, photo: photos[index]));
-    _tickerAction(SecondShowNothingEvent(duration: constants.phaseTwoBreakTime),
-        constants.formViewTime);
+    _tickerAction(
+        ShowFormEvent(duration: constants.formViewTime), event.duration);
   }
 
   void _onSecondShowNothing(

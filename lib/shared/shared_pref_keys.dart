@@ -22,4 +22,5 @@ class SettingsKeys {
 
   // experiment globals
   static const keyRepeatPhaseOne = "key-repeat-phase-one";
+  static const keyPhotoSetID = "key-photo-set-id";
 }
