@@ -15,8 +15,6 @@ class PhasePage extends StatefulWidget {
 }
 
 class _PhasePageState extends State<PhasePage> {
-  final constants = PhaseConstants();
-
   @override
   Widget build(BuildContext context) {
     /// The widgets will be created with a FutureBuilder method, with the future

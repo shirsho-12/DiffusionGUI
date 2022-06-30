@@ -17,7 +17,7 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
   final photos = getPhotos("set_1");
   final constants = PhaseConstants();
   int index = 0;
-  int numPhotos = 1;
+  int numPhotos;
   bool repeatPhaseOne = false;
 
   final Ticker ticker = const Ticker();
@@ -29,7 +29,8 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
     return super.close();
   }
 
-  PhaseBloc() : super(const PhaseInitial()) {
+  PhaseBloc({this.numPhotos = 1}) : super(const PhaseInitial()) {
+    numPhotos = constants.phaseOnePhotos;
     on<StartEvent>(_onStart);
     on<ShowNothingEvent>(_onShowNothing);
     on<ShowPhotoEvent>(_onShowPhoto);
@@ -113,14 +114,14 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
                 constants.breakTime);
             return;
           }
-          if (numPhotos == constants.numFormPhotos) {
+          if (numPhotos == constants.phaseTwoPhotos) {
             // we've already changed phases, so we're done
             emit(const PhaseEnd());
             return;
           }
           // going to the second phase
           index = 0;
-          numPhotos = constants.numFormPhotos;
+          numPhotos = constants.phaseTwoPhotos;
           add(const PhaseChangeEvent());
           return;
         }

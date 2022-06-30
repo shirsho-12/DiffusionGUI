@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import '../../shared/constants.dart';
 
 class PhotoBox extends StatelessWidget {
   final String imagePath;
@@ -40,7 +39,6 @@ class PhotoBox extends StatelessWidget {
 }
 
 FlutterTts flutterTts = FlutterTts();
-final constants = PhaseConstants();
 
 void _speak(String text) async {
   try {
