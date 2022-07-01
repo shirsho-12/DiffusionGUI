@@ -76,22 +76,22 @@ class _AudioCueState extends State<AudioCue> {
   }
 
   Future _setAwaitOptions() async {
-    await flutterTts.awaitSpeakCompletion(true);
+    // await flutterTts.awaitSpeakCompletion(true);
   }
 
   void _speak(String text) async {
     try {
       devtools.log(text);
-      await flutterTts.speak(text);
+      // await flutterTts.speak(text);
     } catch (e) {
       devtools.log(e.toString());
     }
   }
 
   void _slowSpeak(String text) async {
-    flutterTts.setSpeechRate(0.1);
+    // flutterTts.setSpeechRate(0.1);
     try {
-      await flutterTts.speak(text);
+      // await flutterTts.speak(text);
     } catch (e) {
       // print(e);
     }
