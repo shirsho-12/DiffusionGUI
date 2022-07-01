@@ -14,7 +14,7 @@ part 'phase_event.dart';
 part 'phase_state.dart';
 
 class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
-  final photos = getPhotos("set_1");
+  List<Photo> photos = [];
   static final constants = PhaseConstants();
   int index = 0;
   int numPhotos = constants.numPhaseOnePhotos;
@@ -41,7 +41,9 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
     on<ShowFormEvent>(_onShowForm);
   }
 
-  void _onStart(StartEvent event, Emitter<PhaseState> emit) {
+  void _onStart(StartEvent event, Emitter<PhaseState> emit) async {
+    photos = await PhotoSet().getDatabasePhotos("set_1");
+    // photos = await PhotoSet().getPhotos("set_1");
     photos.shuffle();
     emit(PhaseOne(
         showImage: false,

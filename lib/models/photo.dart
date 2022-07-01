@@ -1,7 +1,6 @@
-
 class Photo {
   final String? imgName;
-  final List<String> nameList;
+  final String word;
 
-  Photo({this.imgName, required this.nameList});
+  Photo({this.imgName, required this.word});
 }

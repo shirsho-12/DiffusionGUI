@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'dart:developer' as devtools show log;
 
 class PhotoBox extends StatelessWidget {
   final String imagePath;
@@ -80,9 +81,10 @@ class _AudioCueState extends State<AudioCue> {
 
   void _speak(String text) async {
     try {
+      devtools.log(text);
       await flutterTts.speak(text);
     } catch (e) {
-      // print(e);
+      devtools.log(e.toString());
     }
   }
 

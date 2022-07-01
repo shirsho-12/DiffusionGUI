@@ -19,7 +19,7 @@ class PhaseOneBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageWord = photo.nameList.last.toTitleCase();
+    final imageWord = photo.word.toTitleCase();
     devtools.log(imageWord);
     return SingleChildScrollView(
       child: Column(
@@ -149,9 +149,9 @@ class _PhaseTwoBoxState extends State<PhaseTwoBox> {
       _formKey.currentState?.save();
       setState(() {
         if (_controller.text.trim().isNotEmpty) {
-          widget.photo.nameList.add(_controller.text.trim());
+          // widget.photo.word.add(_controller.text.trim());
           _formKey.currentState?.save();
-          devtools.log(widget.photo.nameList.toString());
+          devtools.log(widget.photo.word.toString());
           // index++,
           // if (index == constants.numPhotos)
           //   Navigator.pushNamedAndRemoveUntil(
