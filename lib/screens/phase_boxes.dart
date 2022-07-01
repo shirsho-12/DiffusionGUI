@@ -1,8 +1,8 @@
 import 'package:diffusion_gui/models/photo.dart';
 import 'package:diffusion_gui/shared/constants.dart';
 import 'package:diffusion_gui/shared/widgets.dart';
-import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
+import 'package:diffusion_gui/exports.dart';
 
 class PhaseOneBox extends StatelessWidget {
   const PhaseOneBox({
@@ -42,7 +42,7 @@ class PhaseOneBox extends StatelessWidget {
           ),
           const SizedBox(height: 20.0),
           showImage
-              ? PhotoBox(imagePath: (photo.imgName!))
+              ? PhotoBox(imagePath: (photo.photoPath))
               : const SizedBox(height: 200.0),
         ],
       ),
@@ -115,6 +115,8 @@ class _PhaseTwoBoxState extends State<PhaseTwoBox> {
                         width:
                             MediaQuery.of(context).size.width > 550 ? 450 : 200,
                         child: TextFormField(
+                          controller: _controller,
+                          style: const TextStyle(color: Colors.black),
                           decoration: const InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
@@ -136,7 +138,7 @@ class _PhaseTwoBoxState extends State<PhaseTwoBox> {
                   ),
                 ),
                 const SizedBox(height: 20.0),
-                PhotoBox(imagePath: (widget.photo.imgName!)),
+                PhotoBox(imagePath: (widget.photo.photoPath)),
               ],
             ),
           );
@@ -146,18 +148,19 @@ class _PhaseTwoBoxState extends State<PhaseTwoBox> {
     final isValid = _formKey.currentState?.validate();
     FocusScope.of(context).unfocus();
     if (isValid ?? false) {
-      _formKey.currentState?.save();
-      setState(() {
-        if (_controller.text.trim().isNotEmpty) {
-          // widget.photo.word.add(_controller.text.trim());
-          _formKey.currentState?.save();
-          devtools.log(widget.photo.word.toString());
-          // index++,
-          // if (index == constants.numPhotos)
-          //   Navigator.pushNamedAndRemoveUntil(
-          //       context, thankYouRoute, (route) => false),
-        }
-      });
+      // _formKey.currentState?.save();
+      if (_controller.text.trim().isNotEmpty) {
+        // widget.photo.word.add(_controller.text.trim());
+        devtools.log(_controller.text.trim());
+        context.read<PhaseBloc>().add(FormSubmissionEvent(
+            photoPath: widget.photo.photoPath,
+            userInputWord: _controller.text.trim().toLowerCase()));
+        _controller.clear();
+        // index++,
+        // if (index == constants.numPhotos)
+        //   Navigator.pushNamedAndRemoveUntil(
+        //       context, thankYouRoute, (route) => false),
+      }
     }
   }
 }

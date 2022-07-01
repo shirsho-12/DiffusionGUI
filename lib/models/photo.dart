@@ -1,6 +1,6 @@
 class Photo {
-  final String? imgName;
+  final String photoPath;
   final String word;
 
-  Photo({this.imgName, required this.word});
+  Photo({required this.photoPath, required this.word});
 }

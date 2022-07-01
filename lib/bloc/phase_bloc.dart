@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:diffusion_gui/bloc/ticker.dart';
-import 'package:diffusion_gui/data/img_fetcher.dart';
+import 'package:diffusion_gui/crud/photo_service.dart';
 import 'package:diffusion_gui/models/photo.dart';
 import 'package:diffusion_gui/shared/constants.dart';
 import 'package:equatable/equatable.dart';
@@ -19,6 +19,7 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
   int index = 0;
   int numPhotos = constants.numPhaseOnePhotos;
   bool repeatPhaseOne = constants.repeatPhaseOne;
+  final _photoService = PhotoService();
 
   final Ticker ticker = const Ticker();
   StreamSubscription<int>? _tickerSubscription;
@@ -39,10 +40,11 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
     on<PhaseChangeEvent>(_onPhaseChange);
     on<SecondShowNothingEvent>(_onSecondShowNothing);
     on<ShowFormEvent>(_onShowForm);
+    on<FormSubmissionEvent>(_onFormSubmission);
   }
 
   void _onStart(StartEvent event, Emitter<PhaseState> emit) async {
-    photos = await PhotoSet().getDatabasePhotos("set_1");
+    photos = await _photoService.getDatabasePhotos(constants.photoSetID);
     // photos = await PhotoSet().getPhotos("set_1");
     photos.shuffle();
     emit(PhaseOne(
@@ -117,6 +119,7 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
           }
           if (numPhotos == constants.numPhaseTwoPhotos) {
             // we've already changed phases, so we're done
+            _photoService.close();
             emit(const PhaseEnd());
             return;
           }
@@ -153,6 +156,15 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
     emit(PhaseTwo(showScreen: true, photo: photos[index]));
     _tickerAction(SecondShowNothingEvent(duration: constants.phaseTwoBreakTime),
         event.duration);
+  }
+
+  void _onFormSubmission(
+      FormSubmissionEvent event, Emitter<PhaseState> emit) async {
+    await _photoService.addWord(
+        setId: int.parse(constants.photoSetID.split("_").last),
+        photoPath: event.photoPath,
+        word: event.userInputWord);
+    add(SecondShowNothingEvent(duration: constants.phaseTwoBreakTime));
   }
 
   void _tickerAction(PhaseEvent nextEvent, int time, {bool isBreak = false}) {

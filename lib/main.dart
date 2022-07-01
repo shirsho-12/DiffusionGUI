@@ -5,8 +5,6 @@ import 'package:diffusion_gui/exports.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// TODO: Set up databse for word inputs and images - CRUD
-// TODO: Fix user input for phase two
 // TODO: Implement settings cache save/load
 // TODO: Convert to standalone program
 

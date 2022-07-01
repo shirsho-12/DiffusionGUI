@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:diffusion_gui/crud/crud_exceptions.dart';
 import 'package:diffusion_gui/crud/database_photo.dart';
+import 'package:diffusion_gui/models/photo.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path_provider_windows/path_provider_windows.dart';
 import 'package:sqflite/sqflite.dart';
@@ -17,9 +18,6 @@ extension Filter<T> on Stream<List<T>> {
 
 class PhotoService {
   Database? _db;
-  final List<DatabasePhoto> _photos = [];
-
-  DatabasePhotoSet? _photoSet;
 
   static final PhotoService _instance = PhotoService._sharedInstance();
   PhotoService._sharedInstance();
@@ -107,6 +105,21 @@ class PhotoService {
     }
   }
 
+  // get all photos in a set
+  Future<List<Photo>> getDatabasePhotos(String setId) async {
+    final id = int.parse(setId.split("_").last);
+    final databasePhotos = await getPhotoSet(setId: id);
+    List<Photo> photos = [];
+    for (int i = 0; i < databasePhotos.length; i++) {
+      final word =
+          await getLastPhotoWord(photoPath: databasePhotos[i].photoPath);
+      // devtools.log("PRINTING HERE ${word.photoPath} ${word.word}");
+      photos
+          .add(Photo(photoPath: databasePhotos[i].photoPath, word: word.word));
+    }
+    return photos;
+  }
+
   // U in CRUD - no update operations, insertions only
 
   // D in CRUD - no delete operations necessary, just in case
@@ -168,12 +181,7 @@ class PhotoService {
       }
 
       _db = db;
-      final table = await db.query('sqlite_master',
-          where: 'name = ?', whereArgs: [photoSetTable]);
-      // devtools.log(table.toString());
-      // if (table.isEmpty) {
       await _createTable(db);
-      // }
       // await _cachePhotos();
     } on MissingPlatformDirectoryException {
       devtools.log("Exception thrown here");
@@ -184,8 +192,8 @@ class PhotoService {
   Future<void> _createTable(Database db) async {
     try {
       // these two lines are run for testing purposes
-      await db.execute("DROP TABLE $photoTable;");
-      await db.execute("DROP TABLE $photoSetTable;");
+      // await db.execute("DROP TABLE $photoTable;");
+      // await db.execute("DROP TABLE $photoSetTable;");
       await db.execute(createPhotoSetTable);
       await db.execute(createPhotoTable);
       for (int i = 1; i <= 4; i++) {
@@ -194,11 +202,15 @@ class PhotoService {
         final List<FileSystemEntity> entities = await dir.list().toList();
         for (FileSystemEntity photoPath in entities) {
           final path = photoPath.path;
-          await addPhoto(setId: i, photoPath: path);
-          final word = path.split('/').last.split('.').first;
-          devtools.log(path);
-          devtools.log(word);
-          await addWord(setId: i, photoPath: path, word: word);
+          final photo = await db.query(photoSetTable,
+              where: '$photoPathColumn = ? ', whereArgs: [path]);
+          if (photo.isEmpty) {
+            await addPhoto(setId: i, photoPath: path);
+            final word = path.split('/').last.split('.').first;
+            devtools.log(path);
+            devtools.log(word);
+            await addWord(setId: i, photoPath: path, word: word);
+          }
         }
       }
     } catch (e) {
@@ -209,9 +221,11 @@ class PhotoService {
 
   Future<void> close() async {
     final db = _db;
+
     if (db == null) {
       throw DatabaseIsClosedException();
     } else {
+      devtools.log(db.toString());
       await db.close();
       _db == null;
     }

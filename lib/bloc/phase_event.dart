@@ -56,3 +56,12 @@ class SecondShowNothingEvent extends PhaseEvent {
 class ShowFormEvent extends PhaseEvent {
   const ShowFormEvent({required int duration}) : super(duration: duration);
 }
+
+// user submits answer, actions should proceed instantly
+class FormSubmissionEvent extends PhaseEvent {
+  final String userInputWord;
+  final String photoPath;
+  const FormSubmissionEvent(
+      {required this.photoPath, required this.userInputWord})
+      : super(duration: 0);
+}

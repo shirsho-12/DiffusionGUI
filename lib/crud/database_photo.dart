@@ -78,7 +78,7 @@ const createPhotoSetTable = '''CREATE TABLE IF NOT EXISTS "photo_set" (
 
 const createPhotoTable = '''CREATE TABLE IF NOT EXISTS "photo" (
   "$idColumn" INTEGER NOT NULL,
-  "$photoPathColumn" Text NOT NULL UNIQUE,
+  "$photoPathColumn" Text NOT NULL,
   "$setIdColumn" INTEGER NOT NULL,
   "$wordColumn" TEXT NOT NULL,
   PRIMARY KEY("$idColumn" AUTOINCREMENT)
