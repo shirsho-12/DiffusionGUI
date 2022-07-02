@@ -48,13 +48,13 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
     // photos = await PhotoSet().getPhotos("set_1");
     photos.shuffle();
     emit(PhaseOne(
-        showImage: false,
+        showImage: true,
         showWord: false,
         showAudio: false,
         photo: photos[index],
         time: constants.phaseOneBreakTime));
-    _tickerAction(ShowPhotoEvent(duration: constants.initView),
-        constants.phaseOneBreakTime);
+    _tickerAction(
+        ShowAudioEvent(duration: constants.audioView), constants.initView);
   }
 
   void _onShowNothing(ShowNothingEvent event, Emitter<PhaseState> emit) {
