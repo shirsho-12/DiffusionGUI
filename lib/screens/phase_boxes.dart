@@ -127,7 +127,7 @@ class _PhaseTwoBoxState extends State<PhaseTwoBox> {
                                 borderSide:
                                     BorderSide(color: Colors.pink, width: 1)),
                           ),
-                          onFieldSubmitted: (val) => _handleSubmit,
+                          onFieldSubmitted: (val) => _handleSubmit(),
                         ),
                       ),
                       IconButton(
