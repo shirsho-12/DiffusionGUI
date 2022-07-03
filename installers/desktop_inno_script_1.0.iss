@@ -4,22 +4,26 @@
 #define MyAppName "Diffusion GUI"
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "Shirshajit Sen Gupta"
+#define MyAppURL "https://www.linkedin.com/in/shirshajit"
 #define MyAppExeName "diffusion_gui.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{4A81C65D-3288-443A-981E-3994CE294157}
+AppId={{417ACA46-4CB3-4F3E-A8AA-32627E391CDB}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
-DefaultDirName={autopf}\{#MyAppName}
+AppPublisherURL={#MyAppURL}
+AppSupportURL={#MyAppURL}
+AppUpdatesURL={#MyAppURL}
+DefaultDirName={autopf}\Diffusion Research
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 OutputDir=C:\Users\Shirshajit\StudioProjects\diffusion_gui\installers
-OutputBaseFilename=diffusion_installer
+OutputBaseFilename=diffusion_setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -32,8 +36,11 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "C:\Users\Shirshajit\StudioProjects\diffusion_gui\build\windows\runner\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Shirshajit\StudioProjects\diffusion_gui\build\windows\runner\Release\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Shirshajit\StudioProjects\diffusion_gui\build\windows\runner\Release\.dart_tool\*"; DestDir: "{app}\.dart_tool"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Shirshajit\StudioProjects\diffusion_gui\build\windows\runner\Release\assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Users\Shirshajit\StudioProjects\diffusion_gui\build\windows\runner\Release\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Shirshajit\StudioProjects\diffusion_gui\build\windows\runner\Release\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Shirshajit\StudioProjects\diffusion_gui\build\windows\runner\Release\.dart_tool\sqflite_common_ffi\databases\assets\photos.db"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

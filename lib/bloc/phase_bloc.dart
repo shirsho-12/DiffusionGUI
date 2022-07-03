@@ -19,6 +19,7 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
   int index = 0;
   int numPhotos = constants.numPhaseOnePhotos;
   bool repeatPhaseOne = constants.repeatPhaseOne;
+  bool phaseTwo = false;
   final _photoService = PhotoService();
 
   final Ticker ticker = const Ticker();
@@ -117,9 +118,9 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
                 constants.phaseOneRepeatTime);
             return;
           }
-          if (numPhotos == constants.numPhaseTwoPhotos) {
+          if (phaseTwo == true && numPhotos == constants.numPhaseTwoPhotos) {
             // we've already changed phases, so we're done
-            _photoService.close();
+            // _photoService.close();
             emit(const PhaseEnd());
             return;
           }
@@ -128,6 +129,7 @@ class PhaseBloc extends Bloc<PhaseEvent, PhaseState> {
           numPhotos = constants.numPhaseTwoPhotos;
           emit(const BetweenPhase());
           add(PhaseChangeEvent(duration: constants.betweenPhaseBreakTime));
+          phaseTwo = true;
           return;
         }
       }

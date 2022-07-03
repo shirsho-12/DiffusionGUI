@@ -171,8 +171,8 @@ class PhotoService {
         PathProviderWindows.registerWith();
       }
 
-      final docPath = await getApplicationDocumentsDirectory();
-      final dbPath = join(docPath.path, dbName);
+      const docPath = "assets/";
+      final dbPath = join(docPath, dbName);
       Database db;
       if (Platform.isWindows) {
         db = await databaseFactoryFfi.openDatabase(dbPath);

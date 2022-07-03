@@ -170,13 +170,26 @@ class ThankYouBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        "Thank you participating.",
-        style: TextStyle(fontSize: 120.0),
-        textAlign: TextAlign.center,
+    return Column(children: [
+      const Center(
+        child: Text(
+          "Thank you participating.",
+          style: TextStyle(fontSize: 120.0),
+          textAlign: TextAlign.center,
+        ),
       ),
-    );
+      const SizedBox(width: 100),
+      SizedBox(
+        height: 100.0,
+        width: 150.0,
+        child: ElevatedButton.icon(
+          onPressed: () => Navigator.pushNamedAndRemoveUntil(
+              context, homeRoute, (route) => false),
+          icon: const Icon(Icons.home),
+          label: const Text("Home"),
+        ),
+      ),
+    ]);
   }
 }
 

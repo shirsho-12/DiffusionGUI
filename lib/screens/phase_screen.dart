@@ -20,6 +20,8 @@ class _PhasePageState extends State<PhasePage> {
     /// The widgets will be created with a FutureBuilder method, with the future
     /// being the ones created above
 
+    // ignore: unnecessary_new
+    final _ = new PhaseBloc();
     context.read<PhaseBloc>().add(const StartEvent());
     return Scaffold(
       appBar: screenAppBar(),
